@@ -4,6 +4,8 @@ import locations from './store/locations';
 import formUI from './views/form';
 import ticketsUI from './views/tickets';
 import currencyUI from './views/currency';
+import loginUI from './views/login';
+import registerUI from './views/register';
 
 document.addEventListener('DOMContentLoaded', e => {
   const form = formUI.form;
@@ -17,8 +19,18 @@ document.addEventListener('DOMContentLoaded', e => {
 
   // handlers
   async function initApp() {
+    loadLocalStorage();
     await locations.init();
     formUI.setAutocompleteData(locations.shortCities);
+  }
+
+  function loadLocalStorage() {
+    const userStorage = localStorage.getItem('user');
+    if (userStorage) {
+      const data = JSON.parse(userStorage);
+      console.log(data);
+      authenticate(data);
+    }
   }
 
   async function onFormSubmit() {
@@ -38,4 +50,59 @@ document.addEventListener('DOMContentLoaded', e => {
 
     ticketsUI.renderTickets(locations.lastSearch);
   }
+
+  const loginForm = loginUI.form;
+
+  function authenticate(data) {
+    const { username } = data;
+    localStorage.setItem('user', JSON.stringify(data));
+    const noAuth = document.getElementById('no-auth');
+    const auth = document.getElementById('auth');
+    noAuth.style.display = 'none';
+    auth.style.display = 'flex';
+    const usernameLabel = document.getElementById('username');
+    usernameLabel.innerText = username;
+  }
+
+  function logout() {
+    localStorage.clear();
+    const noAuth = document.getElementById('no-auth');
+    const auth = document.getElementById('auth');
+    noAuth.style.display = 'block';
+    auth.style.display = 'none';
+  }
+
+  const logoutBtn = document.getElementById('logout');
+
+  logoutBtn.addEventListener('click', () => logout());
+
+  loginForm.addEventListener('submit', event => {
+    event.preventDefault();
+    const body = {
+      username: loginUI.usernameValue,
+      password: loginUI.passwordValue
+    };
+    fetch('http://aviadata.loc/login', { method: 'POST', body: JSON.stringify(body) })
+      .then(response => response.json())
+      .then(data => {
+        alert('login')
+        authenticate(data);
+      });
+  });
+
+  const registerForm = registerUI.form;
+
+  registerForm.addEventListener('submit', event => {
+    event.preventDefault();
+    const body = {
+      username: registerUI.usernameValue,
+      password: registerUI.passwordValue
+    };
+    fetch('http://aviadata.loc/register', { method: 'POST', body: JSON.stringify(body) })
+      .then(response => response.json())
+      .then(data => {
+        alert('Register');
+        authenticate(data);
+      });
+  });
 });

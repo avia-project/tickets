@@ -33,3 +33,7 @@ M.Datepicker.init(datepickers, {
 export function getDatePickerInstance(elem) {
   return M.Datepicker.getInstance(elem);
 }
+
+// Init modals
+const modals = document.querySelectorAll('.modal');
+const instances = M.Modal.init(modals);
