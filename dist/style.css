@@ -111,6 +111,16 @@
   font-size: 18px;
 }
 
+.login, .register {
+  height: 300px;
+  color: black;
+}
+
+#auth {
+  display: none;
+  -webkit-box-align: center;
+          align-items: center;
+}
 /*!
  * Materialize v1.0.0 (http://materializecss.com)
  * Copyright 2014-2017 Materialize

@@ -19,7 +19,7 @@
             <i class="large material-icons">flight_takeoff</i>
             <a href="#" class="brand-logo">Avia Tickets</a>
           </div>
-          <ul id="nav-mobile" class="right hide-on-med-and-down ml-auto">
+          <ul id="nav-mobile" class="right hide-on-med-and-down ml-auto d-flex align-items-center">
             <li>
               <div class="input-field currency-select">
                 <select id="currency">
@@ -27,6 +27,51 @@
                   <option value="EUR">€ Euro</option>
                 </select>
               </div>
+            </li>
+            <li>
+              <div id="no-auth">
+                <button data-target="modal1" class="btn modal-trigger">Login</button>
+                <button data-target="modal2" class="btn modal-trigger">Register</button>
+              </div>
+              <div id="auth">
+                <div id="username" class="mr-2"></div>
+                <button id="logout" class="btn">Logout</button>
+              </div>
+              <!-- Modal -->
+              <div id="modal1" class="modal login">
+                <div class="modal-content">
+                  <h3>Login</h3>
+                  <form id="loginForm" method="post" action="/login">
+                    <div class="input-field">
+                      <label for="email-login">Username</label>
+                      <input id="email-login" type="email" class="validate" placeholder="email" required>
+                    </div>
+                    <div class="input-field">
+                      <label for="password-login">Password</label>
+                      <input id="password-login" type="password" class="validate" placeholder="password" required>
+                    </div>
+                    <button class="btn" type="submit">Login</button>
+                  </form>
+                </div>
+              </div>
+
+              <!-- Modal -->
+              <div id="modal2" class="modal register" method="post" action="/register">
+                  <div class="modal-content">
+                    <h3>Register</h3>
+                    <form id="registerForm">
+                      <div class="input-field">
+                        <label for="email-register">Username</label>
+                        <input id="email-register" type="email" class="validate" placeholder="email" required>
+                      </div>
+                      <div class="input-field">
+                        <label for="password-register">Password</label>
+                        <input id="password-register" type="password" class="validate" placeholder="password" required>
+                      </div>
+                      <button class="btn" type="submit">Register</button>
+                    </form>
+                  </div>
+                </div>
             </li>
           </ul>
         </div>
@@ -137,5 +182,5 @@
         </div>
       </div>
     </div>
-  <script type="text/javascript" src="polyfill.740c63bb51acac53584d.js"></script><script type="text/javascript" src="app.740c63bb51acac53584d.js"></script></body>
+  <script type="text/javascript" src="polyfill.5b192fdb524d5787ffc2.js"></script><script type="text/javascript" src="app.5b192fdb524d5787ffc2.js"></script></body>
 </html>
