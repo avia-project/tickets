@@ -10,6 +10,8 @@ class Api {
   constructor(config) {
     /*get link API from file apiConfig*/
     this.url = config.url;
+    this.weatherUrl = config.weatherUrl;
+    this.weatherKey = config.weatherKey;
   }
   async countries() {
     try {
@@ -44,6 +46,17 @@ class Api {
   async prices(params) {
     try {
       const response = await axios.get(`${this.url}/prices/cheap`, {
+        params,
+      });
+      return response.data;
+    } catch (err) {
+      console.log(err);
+      return Promise.reject(err);
+    }
+  }
+  async forecast(params) {
+    try {
+      const response = await axios.get(`${this.weatherUrl}/forecast/daily`, {
         params,
       });
       return response.data;
