@@ -19,8 +19,6 @@ function register($body) {
 
 function login($body) {
     $con = Database::getConnection();
-    $username = $body['username'];
-    $password = $body['password'];
     $statement = $con->prepare(
         'SELECT * FROM `users` WHERE username=:username AND password=:password'
     );
@@ -29,7 +27,7 @@ function login($body) {
     $statement->execute();
     $result = $statement->fetchAll(PDO::FETCH_ASSOC);
     if (count($result)) {
-        http_response_code(200);
+        http_response_code(200);$body['password'] = hash( 'ripemd160', $body["password"]);
         echo json_encode(['username' => $body['username']]);
     }
     else {
@@ -39,11 +37,9 @@ function login($body) {
 
 Router::add('/register', function() {
     try {
-      //  $body = json_decode(file_get_contents('php://input'), true);
-        $body = [
-          "username" => $_GET["username"],
-          "password" => $_GET["password"]
-        ];
+        $body = json_decode(file_get_contents('php://input'), true);
+        $body['password'] = hash( 'ripemd160', $body["password"]);
+
         cors();
         register($body);
     } catch(Exception $e) {
@@ -51,26 +47,25 @@ Router::add('/register', function() {
         http_response_code(400);
     }
     cors();
-}, 'get');
+}, 'post');
 
 
 
 Router::add('/login' , function() {
     try {
-        //$body = json_decode(file_get_contents('php://input'), true);
-        $body = [
+        $body = json_decode(file_get_contents('php://input'), true);
+       /* $body = [
             "username" => $_GET["username"],
-            "password" => $_GET["password"]
-        ];
+            "password" => hash( 'ripemd160',$_GET["password"])
+        ];*/
+        $body['password'] = hash( 'ripemd160', $body["password"]);
         cors();
         login($body);
     } catch(Exception $e) {
         cors();
         http_response_code(400);
     }
-   // cors();*/
-
-}, 'get');
+}, 'post');
 
 try {
     Router::run('/');

@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', e => {
       username: loginUI.usernameValue,
       password: loginUI.passwordValue
     };
-    fetch(`http://www.aviadata.loc/login?username=${loginUI.usernameValue}&password=${loginUI.passwordValue}`, { method: 'GET' })
+    fetch(`http://www.aviadata.loc/login`, { method: 'POST', body: JSON.stringify(body) })
       .then(response => response.json())
       .then(data => {
         alert('login')
@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', e => {
       username: registerUI.usernameValue,
       password: registerUI.passwordValue
     };
-    fetch(`http://www.aviadata.loc/register?username=${registerUI.usernameValue}&password=${registerUI.passwordValue}`, { method: 'GET' })
+    fetch(`http://www.aviadata.loc/register`, { method: 'POST', body: JSON.stringify(body) })
       .then(response => response.json())
       .then(data => {
         alert('Register');
