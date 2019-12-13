@@ -10,16 +10,17 @@ class Locations {
     this.shortCities = {};
     this.lastSearch = {};
     this.airlines = {};
+    this.forecast = {};
     this.formatDate = helpers.formatDate;
   }
   async init() {
-    /*get all response abouy countries, cities and airlines from API*/
+    /*get all response about countries, cities and airlines from API*/
     const response = await Promise.all([
       this.api.countries(),
       this.api.cities(),
       this.api.airlines(),
     ]);
-    /*destructing and save that whot wi got in response*/
+    /*destructing and save that what we got in response*/
     const [countries, cities, airlines] = response;
     this.countries = this.serializeCountries(countries);
     this.cities = this.serializeCities(cities);
@@ -27,6 +28,13 @@ class Locations {
     this.airlines = this.serializeAirlines(airlines);
 
     return response;
+  }
+
+  getCityCountryCodeByKey(key) {
+    const city = Object.values(this.cities).find(
+        item => item.name_translations.en === key,
+    );
+    return city.country_code;
   }
 
   getCityCodeByKey(key) {
@@ -38,6 +46,24 @@ class Locations {
 
   getCityNameByCode(code) {
     return this.cities[code].name;
+  }
+
+  getCityEngNameByCode(code) {
+    return this.cities[code].name_translations.en;
+  }
+
+  getDateTemperature(date){
+    const day = Object.values(this.forecast).find(
+      item => item.valid_date === date,
+    );
+    return (typeof day !== 'undefined') ? day.temp : '';
+  }
+
+  getWeatherDescription(date){
+    const day = Object.values(this.forecast).find(
+        item => item.valid_date === date,
+    );
+    return (typeof day !== 'undefined') ? day.weather.description : '';
   }
 
   getAirlineNameByCode(code) {
@@ -87,6 +113,21 @@ class Locations {
 
   async fetchTickets(params) {
     const response = await this.api.prices(params);
+    const city = this.getCityEngNameByCode(params.destination);
+    const lang = "ru";
+    const country = this.getCityCountryCodeByKey(city);
+    const key = this.api.weatherKey;
+    const forecasted_city = (typeof this.forecast[0] !== 'undefined') ? this.forecast[0].forecasted_city : '';
+    if (forecasted_city !== city) {
+      const forecastResponse = await this.api.forecast({
+        city,
+        country,
+        lang,
+        key,
+      });
+      this.forecast = this.serializeForecast(forecastResponse.data, city);
+    }
+
     this.lastSearch = this.serializeTickets(response.data);
   }
 
@@ -100,6 +141,17 @@ class Locations {
         airline_name: this.getAirlineNameByCode(ticket.airline),
         departure_at: this.formatDate(ticket.departure_at, 'dd MMM yyyy hh:mm'),
         return_at: this.formatDate(ticket.return_at, 'dd MMM yyyy hh:mm'),
+        temperature: this.getDateTemperature(this.formatDate(ticket.departure_at, 'yyyy-MM-dd')),
+        weather_description: this.getWeatherDescription(this.formatDate(ticket.departure_at, 'yyyy-MM-dd')),
+      };
+    });
+  }
+
+  serializeForecast(days, city){
+    return Object.values(days).map(day => {
+      return {
+        ...day,
+	    forecasted_city: city,
       };
     });
   }
