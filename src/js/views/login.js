@@ -4,6 +4,8 @@ class LoginUI {
       this.$form = document.forms['loginForm'];
       this.username = document.getElementById('email-login');
       this.password = document.getElementById('password-login');
+
+      this.$form.style.display = 'block';
     }
   
     get form() {

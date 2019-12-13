@@ -7,14 +7,27 @@ include_once  'Service/Utils.php';
 
 function register($body) {
     $con = Database::getConnection();
+
     $statement = $con->prepare(
-        'INSERT INTO `users` (`username`, `password`)' .
-        'VALUES(:username, :password) ');
+        'SELECT * FROM `users` WHERE username=:username'
+    );
     $statement->bindParam('username', $body['username']);
-    $statement->bindParam('password', $body['password']);
     $statement->execute();
-    http_response_code(200);
-    echo json_encode(['username' => $body['username']]);
+    $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+    if (!count($result)) {
+        $statement = $con->prepare(
+            'INSERT INTO `users` (`username`, `password`)' .
+            'VALUES(:username, :password) ');
+        $statement->bindParam('username', $body['username']);
+        $statement->bindParam('password', $body['password']);
+        $statement->execute();
+        http_response_code(200);
+        echo json_encode(['username' => $body['username']]);
+    }
+    else {
+        http_response_code(401);
+    }
 }
 
 function login($body) {
@@ -46,7 +59,6 @@ Router::add('/register', function() {
         cors();
         http_response_code(400);
     }
-    cors();
 }, 'post');
 
 

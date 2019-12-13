@@ -62,6 +62,27 @@ document.addEventListener('DOMContentLoaded', e => {
     auth.style.display = 'flex';
     const usernameLabel = document.getElementById('username');
     usernameLabel.innerText = username;
+
+    //hideForm(loginUI);
+    //hideForm(registerUI);
+  }
+
+  /*function hideForm(formUI) {
+    formUI.username.value = "";
+    formUI.password.value = "";
+
+    console.log("hiding form called");
+  }*/
+
+  function incorrectData(formUI) {
+    formUI.password.value = "";
+
+    var message;
+    if (formUI === registerUI)
+      message = "User with this username is already exists";
+    else message = "Incorrect data";
+
+    alert(message);
   }
 
   function logout() {
@@ -83,7 +104,14 @@ document.addEventListener('DOMContentLoaded', e => {
       password: loginUI.passwordValue
     };
     fetch(`http://www.aviadata.loc/login`, { method: 'POST', body: JSON.stringify(body) })
-      .then(response => response.json())
+      .then(response => {
+          if (response.ok)
+            return response.json();
+          else { 
+            incorrectData(loginUI);
+            throw response;
+          }
+      })
       .then(data => {
         alert('login')
         authenticate(data);
@@ -99,7 +127,14 @@ document.addEventListener('DOMContentLoaded', e => {
       password: registerUI.passwordValue
     };
     fetch(`http://www.aviadata.loc/register`, { method: 'POST', body: JSON.stringify(body) })
-      .then(response => response.json())
+      .then(response => {
+          if (response.ok) 
+            return response.json();
+          else { 
+            incorrectData(registerUI);
+            throw response;
+          }
+        })
       .then(data => {
         alert('Register');
         authenticate(data);
