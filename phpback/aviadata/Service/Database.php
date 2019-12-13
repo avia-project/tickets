@@ -5,7 +5,23 @@ include_once 'Service/Config.php';
 
 class Database
 {
-    private $con;
+    /*private static $connection = null;
+
+
+    public static function getConnection()
+    {
+        if (self::$connection == null) {
+            try {
+                self::$connection = new PDO(db_type .':/host=' . host . ';dbname=' . db_name,
+                    username,
+                    password);
+                self::$connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            } catch (PDOException $e) {
+                echo "Connection failed: " . $e->getMessage();
+            }
+        }
+    }
+    */private $con;
     private static $instance;
     private function __construct(){
         $this->сonnect();
