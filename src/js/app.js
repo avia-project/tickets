@@ -6,6 +6,7 @@ import ticketsUI from './views/tickets';
 import currencyUI from './views/currency';
 import loginUI from './views/login';
 import registerUI from './views/register';
+import {getModalInstance} from './plugins/materialize';
 
 document.addEventListener('DOMContentLoaded', e => {
   const form = formUI.form;
@@ -52,6 +53,10 @@ document.addEventListener('DOMContentLoaded', e => {
   }
 
   const loginForm = loginUI.form;
+  const registerForm = registerUI.form;
+
+  const loginModal = getModalInstance(document.getElementById('modal1'));
+  const registerModal = getModalInstance(document.getElementById('modal2'));
 
   function authenticate(data) {
     const { username } = data;
@@ -63,16 +68,26 @@ document.addEventListener('DOMContentLoaded', e => {
     const usernameLabel = document.getElementById('username');
     usernameLabel.innerText = username;
 
-    //hideForm(loginUI);
-    //hideForm(registerUI);
+    if ((typeof loginModal != ('undefined')) || loginModal.isOpen)
+      hideLoginForm();
+
+    if ((typeof registerModal != ('undefined')) || registerModal.isOpen)
+      hideRegisterForm();
   }
 
-  /*function hideForm(formUI) {
-    formUI.username.value = "";
-    formUI.password.value = "";
+  function hideLoginForm() {
+    loginUI.username.value = "";
+    loginUI.password.value = "";
 
-    console.log("hiding form called");
-  }*/
+    loginModal.close();
+  }
+
+  function hideRegisterForm() {
+    registerUI.username.value = "";
+    registerUI.password.value = "";
+
+    registerModal.close();
+  }
 
   function incorrectData(formUI) {
     formUI.password.value = "";
@@ -117,8 +132,6 @@ document.addEventListener('DOMContentLoaded', e => {
         authenticate(data);
       });
   });
-
-  const registerForm = registerUI.form;
 
   registerForm.addEventListener('submit', event => {
     event.preventDefault();

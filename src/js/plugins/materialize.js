@@ -37,3 +37,7 @@ export function getDatePickerInstance(elem) {
 // Init modals
 const modals = document.querySelectorAll('.modal');
 const instances = M.Modal.init(modals);
+
+export function getModalInstance(elem) {
+  return M.Modal.getInstance(elem);
+}
