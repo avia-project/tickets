@@ -7,7 +7,6 @@ class Database
 {
     private static $connection = null;
 
-
     public static function getConnection() {
         if (self::$connection == null) {
             try {

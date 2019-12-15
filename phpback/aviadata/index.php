@@ -3,6 +3,7 @@
 include_once 'Service/Router.php';
 include_once 'Service/Utils.php';
 include_once 'Controller/Authentication.php';
+include_once 'Controller/TicketController.php';
 
 Router::add('/register', function() {
     try {
@@ -24,5 +25,16 @@ Router::add('/login' , function() {
         http_response_code(400);
     }
 }, 'post');
+
+Router::add('/ticket/add', function () {
+    try {
+        $body = json_decode(file_get_contents('php://input'), true);
+        cors();
+        TicketController::add($body);
+    } catch (Exception $e) {
+        cors();
+        http_response_code(400);
+    }
+},'post');
 
 Router::run('/');
