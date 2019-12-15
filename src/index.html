@@ -34,7 +34,8 @@
                 <button data-target="modal2" class="btn modal-trigger">Register</button>
               </div>
               <div id="auth">
-                <div id="username" class="mr-2"></div>
+               <!-- <div id="username" class="mr-2"></div> -->
+                <button data-target="modal3" id="userpage" class="btn modal-trigger">Personal page</button>
                 <button id="logout" class="btn">Logout</button>
               </div>
               <!-- Modal -->
@@ -72,6 +73,17 @@
                     </form>
                   </div>
                 </div>
+
+                <!--Modal -->
+                <div id="modal3" class="modal login" action="/userpage">
+                  <div class="modal-content">
+                    <h3 id="usrpg-title">Username</h3>
+                    Personal page
+                    <br>
+                    <button id="usrpg-close-btn" class="btn">Close</button>
+                  </div>
+                </div>
+
             </li>
           </ul>
         </div>

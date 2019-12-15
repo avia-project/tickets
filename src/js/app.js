@@ -4,8 +4,9 @@ import locations from './store/locations';
 import formUI from './views/form';
 import ticketsUI from './views/tickets';
 import currencyUI from './views/currency';
-import loginUI from './views/login';
+import loginUI    from './views/login';
 import registerUI from './views/register';
+import userPageUI from './views/userpage';
 import {getModalInstance} from './plugins/materialize';
 
 document.addEventListener('DOMContentLoaded', e => {
@@ -52,11 +53,13 @@ document.addEventListener('DOMContentLoaded', e => {
     ticketsUI.renderTickets(locations.lastSearch);
   }
 
-  const loginForm = loginUI.form;
-  const registerForm = registerUI.form;
+  const loginForm     = loginUI.form;
+  const registerForm  = registerUI.form;
 
-  const loginModal = getModalInstance(document.getElementById('modal1'));
+  const loginModal    = getModalInstance(document.getElementById('modal1'));
   const registerModal = getModalInstance(document.getElementById('modal2'));
+  const userPageModal = getModalInstance(document.getElementById('modal3'));
+
 
   function authenticate(data) {
     const { username } = data;
@@ -65,8 +68,11 @@ document.addEventListener('DOMContentLoaded', e => {
     const auth = document.getElementById('auth');
     noAuth.style.display = 'none';
     auth.style.display = 'flex';
-    const usernameLabel = document.getElementById('username');
-    usernameLabel.innerText = username;
+    const usernameButton = document.getElementById('userpage');
+    usernameButton.innerText = username;
+
+    const userPageTitle = document.getElementById('usrpg-title');
+    userPageTitle.innerText = username;
 
     if ((typeof loginModal != ('undefined')) || loginModal.isOpen)
       hideLoginForm();
@@ -109,8 +115,13 @@ document.addEventListener('DOMContentLoaded', e => {
   }
 
   const logoutBtn = document.getElementById('logout');
+  const userPageBtn = document.getElementById('usrpg-close-btn');
 
   logoutBtn.addEventListener('click', () => logout());
+
+  userPageBtn.addEventListener('click', () => {
+    userPageModal.close();
+  });
 
   loginForm.addEventListener('submit', event => {
     event.preventDefault();
