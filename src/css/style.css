@@ -117,3 +117,7 @@
   display: none;
   align-items: center;
 }
+
+.align-items-right {
+  margin-right: 5px;
+}

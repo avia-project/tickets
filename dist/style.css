@@ -121,6 +121,10 @@
   -webkit-box-align: center;
           align-items: center;
 }
+
+.align-items-right {
+  margin-right: 5px;
+}
 /*!
  * Materialize v1.0.0 (http://materializecss.com)
  * Copyright 2014-2017 Materialize

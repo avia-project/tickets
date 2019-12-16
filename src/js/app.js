@@ -168,4 +168,8 @@ document.addEventListener('DOMContentLoaded', e => {
         authenticate(data);
       });
   });
+
+  function addTicket() {
+    console.log("Foo");
+  }
 });
