@@ -23,8 +23,10 @@ class TicketsUI {
       isAuth = true;
     }
 
+    let ticketId = 0;
     tickets.forEach(ticket => {
-      const template = TicketsUI.ticketTemplate(ticket, currency, isAuth);
+      const template = TicketsUI.ticketTemplate(ticket, currency, isAuth, ticketId);
+      ticketId += 1;
       fragment += template;
     });
 
@@ -48,7 +50,7 @@ class TicketsUI {
     `;
   }
 
-  static ticketTemplate(ticket, currency, isAuth) {
+  static ticketTemplate(ticket, currency, isAuth, ticketId) {
     let forecast = '';
     if (ticket.weather_description !== '' && ticket.temperature !== '') {
       forecast = ticket.weather_description + ' ' + ticket.temperature + '°';
@@ -87,7 +89,7 @@ class TicketsUI {
             <span class="ticket-time-departure">${forecast}</span>
             <span class="ticket-transfers">Пересадок: ${ticket.transfers}</span>
             <span class="ticket-flight-number">Номер рейса: ${ticket.flight_number}</span>
-            <button id="add_btn" class="btn" style="float: right;"  onclick="addTicket()">
+            <button class="btn add_ticket" style="float: right;" value="${ticketId}">
             <b>+</b>
           </button>
           </div>

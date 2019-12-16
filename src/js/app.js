@@ -51,6 +51,28 @@ document.addEventListener('DOMContentLoaded', e => {
     });
 
     ticketsUI.renderTickets(locations.lastSearch);
+    const buttons = document.getElementsByClassName("add_ticket");
+    Array.from(buttons).forEach(button => {
+      button.addEventListener("click", function () {
+        const body = locations.lastSearch[button.value];
+        body['username'] = document.getElementById('usrpg-title').innerText;
+        body['currency'] = "$";
+        console.log(body);
+        fetch(`http://www.aviadata.loc/ticket/add`, { method: 'POST', body: JSON.stringify(body) })
+            .then(response => {
+              if (response.ok)
+                return response.json();
+              else {
+                alert('ERROR adding ticket');
+                throw response;
+              }
+            })
+            .then(data => {
+              alert('added');
+              authenticate(data);
+            });
+      });
+    });
   }
 
   const loginForm     = loginUI.form;
