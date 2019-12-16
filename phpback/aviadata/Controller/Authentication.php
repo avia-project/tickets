@@ -27,7 +27,7 @@ class Authentication
     public static function login($body) {
         $user = new User($body['username'], $body['password']);
         if (User::isExisted($user)) {
-            $result = Ticket::get($user->getUsername());
+            $result = ['tickets' => Ticket::get($user->getUsername())];
             $result += ['username' => $user->getUsername()];
 
             http_response_code(200);

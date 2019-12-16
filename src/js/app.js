@@ -63,6 +63,10 @@ document.addEventListener('DOMContentLoaded', e => {
 
   function authenticate(data) {
     const { username } = data;
+    const { tickets } = data;
+    userPageUI.clearContainer();
+    userPageUI.tickets = tickets;
+    userPageUI.renderTickets();
     localStorage.setItem('user', JSON.stringify(data));
     const noAuth = document.getElementById('no-auth');
     const auth = document.getElementById('auth');
