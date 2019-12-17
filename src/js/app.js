@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', e => {
 
   // handlers
   async function initApp() {
+
     loadLocalStorage();
     await locations.init();
     formUI.setAutocompleteData(locations.shortCities);
@@ -50,9 +51,14 @@ document.addEventListener('DOMContentLoaded', e => {
       currency,
     });
 
+    let isAuth = false;
+    if (localStorage.getItem('user'))
+      isAuth = true;
+
     ticketsUI.renderTickets(locations.lastSearch);
     const buttons = document.getElementsByClassName("add_ticket");
     Array.from(buttons).forEach(button => {
+      BtnsAppereance(isAuth);
       button.addEventListener("click", function () {
         const body = locations.lastSearch[button.value];
         let currency = ticketsUI.getCurrencySymbol();
@@ -105,6 +111,8 @@ document.addEventListener('DOMContentLoaded', e => {
 
     if ((typeof registerModal != ('undefined')) || registerModal.isOpen)
       hideRegisterForm();
+
+    BtnsAppereance(true);
   }
 
   function hideLoginForm() {
@@ -138,6 +146,8 @@ document.addEventListener('DOMContentLoaded', e => {
     const auth = document.getElementById('auth');
     noAuth.style.display = 'block';
     auth.style.display = 'none';
+
+    BtnsAppereance(false);
   }
 
   const logoutBtn = document.getElementById('logout');
@@ -191,7 +201,15 @@ document.addEventListener('DOMContentLoaded', e => {
       });
   });
 
-  function addTicket() {
-    console.log("Foo");
+  function BtnsAppereance(isAuth) {
+    const addBtns = document.getElementsByClassName("add_ticket");
+    Array.from(addBtns).forEach(button => {
+      if (!isAuth) {
+        button.style.display = 'none';
+      }
+      else {
+        button.style.display = 'block';
+      }
+    });
   }
 });
