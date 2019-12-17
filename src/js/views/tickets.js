@@ -87,11 +87,11 @@ class TicketsUI {
         <div>
           <div class="ticket-additional-info">
             <span class="ticket-time-departure">${forecast}</span>
-            <span class="ticket-transfers">Пересадок: ${ticket.transfers}</span>
-            <span class="ticket-flight-number">Номер рейса: ${ticket.flight_number}</span>
-            <button class="btn add_ticket" style="float: right;" value="${ticketId}">
+            <button class="btn add_ticket" style="float: right; margin-top:10px;" value="${ticketId}">
             <b>+</b>
-          </button>
+            </button>
+            <span class="ticket-transfers" style="display:block;">Пересадок: ${ticket.transfers}</span>
+            <span class="ticket-flight-number" style="display:block;">Номер рейса: ${ticket.flight_number}</span>
           </div>
         </div>
       </div>

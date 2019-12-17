@@ -34,26 +34,46 @@ class UserPageUI {
 		this.container.insertAdjacentHTML('afterbegin', template);
 	}
 
-	// addTicket(ticket, currency, quantity) {
-	//
-	// 	let fragment = UserPageUI.ticketTemplate(this.serializeTicket(ticket, currency, quantity));
-	// 	this.container.insertAdjacentHTML('afterbegin', fragment);
-	// }
-	//
-	// serializeTicket(ticket, currency, quantity) {
-	// 	return Object.value(ticket).map(ticket => {
-	// 		return {
-	// 			origin : ticket.origin_name,
-	// 			destination: ticket.destination_name,
-	// 			airline: ticket.airline_name,
-	// 			departure_date: ticket.departure_at,
-	// 			price: ticket.price,
-	// 			currency: currency,
-	// 			transfers: ticket.transfers,
-	// 			quantity: quantity,
-	// 		};
-	// 	});
-	// }
+	addTicket(ticket, currency, quantity) {
+		var serializedTicket = this.serializeTicket(ticket, currency, quantity);
+		var ticketExists = false;
+		let number = 0;
+		var index;
+		this.tickets.forEach( ticket => {
+			if (this.sameTickets(ticket,serializedTicket)) {
+				ticketExists = true;
+				index = number;
+			}
+			number += 1;
+		});
+		if (ticketExists) {
+			this.tickets[index].quantity += 1;
+		} else {
+			this.tickets.push(serializedTicket);
+		}
+	this.renderTickets();
+}
+
+sameTickets(ticket, serializedTicket){
+	if (ticket.origin === serializedTicket.origin
+		&& ticket.destination === serializedTicket.destination
+		&& ticket.airline === serializedTicket.airline
+		&& ticket.departure_date === serializedTicket.departure_date
+		&& ticket.transfers === serializedTicket.transfers) return true;
+	}
+
+	serializeTicket(ticket, currency, quantity) {
+		return {
+			origin: ticket.origin_name,
+			destination: ticket.destination_name,
+			airline: ticket.airline_name,
+			departure_date: ticket.departure_at,
+			price: ticket.price,
+			currency: currency,
+			transfers: ticket.transfers,
+			quantity: quantity
+		};
+	}
 
 	static emptyMsgTemplate() {
 		return `

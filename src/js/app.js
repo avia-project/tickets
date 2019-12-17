@@ -55,9 +55,10 @@ document.addEventListener('DOMContentLoaded', e => {
     Array.from(buttons).forEach(button => {
       button.addEventListener("click", function () {
         const body = locations.lastSearch[button.value];
+        let currency = ticketsUI.getCurrencySymbol();
         body['username'] = document.getElementById('usrpg-title').innerText;
-        body['currency'] = "$";
-        console.log(body);
+        body['currency'] = currency;
+        userPageUI.addTicket(locations.lastSearch[button.value], currency, 1);
         fetch(`http://www.aviadata.loc/ticket/add`, { method: 'POST', body: JSON.stringify(body) })
             .then(response => {
               if (response.ok)
@@ -69,7 +70,6 @@ document.addEventListener('DOMContentLoaded', e => {
             })
             .then(data => {
               alert('added');
-              authenticate(data);
             });
       });
     });
@@ -165,7 +165,7 @@ document.addEventListener('DOMContentLoaded', e => {
           }
       })
       .then(data => {
-        alert('login')
+        alert('login');
         authenticate(data);
       });
   });
