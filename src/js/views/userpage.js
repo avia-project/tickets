@@ -10,7 +10,8 @@ class UserPageUI {
 	renderTickets() {
 		this.clearContainer();
 		const tickets = this.tickets;
-		if (!tickets.length) {
+		let length = typeof tickets != "undefined" ? tickets.length : 0;
+		if (!length) {
 			this.showEmptyMsg();
 			return;
 		}
