@@ -7,11 +7,13 @@ class TicketController
     public static function add($ticketData) {
         $ticket = new Ticket($ticketData);
 
-        if (Ticket::isExisted($ticket) == 0) {
+        $sameTicketId = Ticket::isExisted($ticket);
+
+        if ($sameTicketId == 0) {
             $ticket->save();
         }
         else {
-            $ticket->addOne();
+            $ticket->addOne($sameTicketId);
         }
 
         http_response_code(200);
